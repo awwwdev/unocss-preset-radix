@@ -6,6 +6,7 @@ import {
   type Shade,
   type Options,
   Aliases,
+  SafelistColor,
 } from './types';
 
 import { generateCSSVariablesForColorsInUse } from './preflights';
@@ -16,9 +17,6 @@ import { extendTheme } from './extendTheme';
 import * as colorsInUseHelpers from './colorsInUseHelpers';
 // import detectAndAddToColorsInUseShortcut from './shortcuts';
 
-const ALPHAS: Alpha[] = ['', 'A'];
-const P3S: P3[] = ['', 'P3'];
-const SHADES: Shade[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 
 
 
@@ -27,28 +25,28 @@ export function presetRadix<T extends Aliases>({
   prefix: _prefix = '--un-preset-radix-',
   darkSelector = '.dark-theme',
   lightSelector = ':root, .light-theme',
-  safelistColors = [],
+  safelistColors = [] as SafelistColor[],
   aliases: _aliases,
   safelistAliases: _safelistAliases,
   extend = false,
   onlyOneTheme,
 }: Options<T>): Preset<Theme> {
   let prefix = _prefix.replaceAll('-', ' ').trim().replaceAll(' ', '-'); // remove hyphens from start and end.
-  const aliases = _aliases ?? {};
-  const safelistAliases = _safelistAliases ?? [];
+  // const aliases = _aliases ?? {};
+  const aliases = _aliases as Aliases;
+  const safelistAliases = (_safelistAliases ?? []) as string[];
 
-  colorsInUseHelpers.addsafelistColors<T>({ safelistColors }); // add all 12 shaded and 12 alpha shades
-  colorsInUseHelpers.addsafelistAliases<T>({ safelistAliases, aliases }); // add all 12 shaded and 12 alpha shades
-  colorsInUseHelpers.addNotsafelistAliases<T>({ safelistAliases, aliases }); // this one only adds hues-shade-alphas that are used in project
+  colorsInUseHelpers.addSafelistColors({ safelistColors }); // add all 12 shaded and 12 alpha shades
+  colorsInUseHelpers.addSafelistAliases({ safelistAliases, aliases }); // add all 12 shaded and 12 alpha shades
+  colorsInUseHelpers.addNotSafelistAliases({ safelistAliases, aliases }); // this one only adds hues-shade-alphas that are used in project
 
-  const aliasesInUse = colorsInUseHelpers.getAliasesInUse();
   return {
     name: 'unocss-preset-radix',
     shortcuts: [
       // This shortcut exsit so generated css for colors to have same order.
       [/^(.*)-(transparent|white|black|current|current-color|inherit)$/, ([token]) => `${token}`],
       // This shortcut detects the usage of radix colors or aliases and add used colors to colros in use. Preflight will generate css variables for them.
-      detectAndAddToColorsInUse({ aliasesInUse, useP3Colors, prefix }),
+      detectAndAddToColorsInUse({  useP3Colors, prefix }),
     ],
     variants: useP3Colors ? [addP3Fallbacks({ prefix })] : undefined,
     preflights: [

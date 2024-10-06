@@ -15,7 +15,12 @@ import { RADIX_HUES } from './consts';
 
 
 
-export function detectAndAddToColorsInUse<T>({ aliasesInUse, useP3Colors, prefix }): DynamicShortcut<Theme> {
+export function detectAndAddToColorsInUse<T>({ useP3Colors, prefix }: {
+  useP3Colors: boolean;
+  prefix: string;
+}): DynamicShortcut<Theme> {
+
+  const aliasesInUse = colorsInUseHelpers.getAliasesInUse();
 
 
   return (
@@ -32,7 +37,7 @@ export function detectAndAddToColorsInUse<T>({ aliasesInUse, useP3Colors, prefix
         if (['black', 'white'].includes(hueOrAlias) && alpha === '') return token;
 
         if (['black', 'white', ...RADIX_HUES].includes(hueOrAlias)) {
-          colorsInUseHelpers.addColorToColorsInUse({
+          colorsInUseHelpers.addColor({
             hue: hueOrAlias as RadixHue | 'white' | 'black',
             shade,
             alpha,
@@ -40,14 +45,14 @@ export function detectAndAddToColorsInUse<T>({ aliasesInUse, useP3Colors, prefix
         }
         if (Object.keys(aliasesInUse).includes(hueOrAlias)) {
           const alias = hueOrAlias;
-          colorsInUseHelpers.addAliasToAliasesInUse({ alias, shade, alpha }); // note aliases can be reset to another hue (with alias-danger-is-yellow class). We keep track of all hues assosiated to a alias as possible Hues to generate all of it.
+          colorsInUseHelpers.addAlias({ alias, shade, alpha }); // note aliases can be reset to another hue (with alias-danger-is-yellow class). We keep track of all hues assosiated to a alias as possible Hues to generate all of it.
 
           // add all possible hue-shades to colorsInUse.
           for (const possibleHue of aliasesInUse[alias].possibleHues) {
             const shadeAlphas = Object.keys(aliasesInUse[alias].shadesInUse) as ShadeAlpha[];
             for (const shdeAlpha of shadeAlphas) {
               const { alpha, shade } = aliasesInUse[alias].shadesInUse[shdeAlpha];
-              colorsInUseHelpers.addColorToColorsInUse({ hue: possibleHue, shade, alpha });
+              colorsInUseHelpers.addColor({ hue: possibleHue, shade, alpha });
             }
           }
           // const isDynamicAlias = ![...safelistAliases, Object.keys(aliases)].includes(hueOrAlias);
