@@ -178,14 +178,16 @@ function getColorValue({
   if (p3 === '') {
     // convert Hex values to rgb values
     const color = new Color(value);
-    value = color.toString({ format: 'rgb' });
+    
     if (alpha === 'A') {
+      value = color.toString({ format: 'rgb', precision: 4});
       return value; // put it inside var() so unocss can not add opacity to it.
     }
     if (alpha === '') {
-      // convert 'rgba(100 , 40, 50)' to '100 40 50' to be used in rgba(  / <alpha-value>)
+      // convert 'rgb(100 40 50)' to '100 40 50' to be used in rgb(  / <alpha-value>)
       // so we can use tailwind opacity (bg-opacity-30 or bg-blue9/30) with it
-      return value.replace('rgb(', '').replace(')', '').trim();
+      value = color.toString({ format: 'rgba', precision: 4});
+      return value.replace('rgba(', '').replace(')', '').trim()
     }
   }
 }

@@ -1,13 +1,6 @@
 import { Preset } from 'unocss';
 import type { Theme } from 'unocss/preset-uno';
-import {
-  type Alpha,
-  type P3,
-  type Shade,
-  type Options,
-  Aliases,
-  SafelistColor,
-} from './types';
+import { type Options, Aliases, SafelistColor } from './types';
 
 import { generateCSSVariablesForColorsInUse } from './preflights';
 import { detectAndAddToColorsInUse } from './shortcuts';
@@ -16,9 +9,6 @@ import { extendTheme } from './extendTheme';
 // import addP3FallbacksVariant from './addP3FallbacksVariant';
 import * as colorsInUseHelpers from './colorsInUseHelpers';
 // import detectAndAddToColorsInUseShortcut from './shortcuts';
-
-
-
 
 export function presetRadix<T extends Aliases>({
   useP3Colors = false,
@@ -46,7 +36,7 @@ export function presetRadix<T extends Aliases>({
       // This shortcut exsit so generated css for colors to have same order.
       [/^(.*)-(transparent|white|black|current|current-color|inherit)$/, ([token]) => `${token}`],
       // This shortcut detects the usage of radix colors or aliases and add used colors to colros in use. Preflight will generate css variables for them.
-      detectAndAddToColorsInUse({  useP3Colors, prefix }),
+      detectAndAddToColorsInUse({ useP3Colors, prefix }),
     ],
     variants: useP3Colors ? [addP3Fallbacks({ prefix })] : undefined,
     preflights: [
@@ -73,6 +63,6 @@ export function presetRadix<T extends Aliases>({
     extendTheme: (theme: Theme) => {
       const aliasesInUse = colorsInUseHelpers.getAliasesInUse();
       return extendTheme({ theme, prefix, extend, useP3Colors, aliasesInUse });
-    }
+    },
   };
 }
