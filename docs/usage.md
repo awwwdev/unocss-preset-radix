@@ -22,7 +22,7 @@ $ yarn add -D unocss-preset-radix
 
 :::
 
-## Vite/UnoCSS configuration
+## Vite/UnoCSS Configuration
 
 ```ts
 // uno.config.ts (or vite.config.ts)
@@ -68,7 +68,7 @@ Which will render as:
 
 You can switch the docs theme in the ... menu in the top right corner of the page.
 
-## Advanced configuration
+## Advanced Configuration
 
 ```ts
 // uno.config.ts (or vite.config.ts)
@@ -84,20 +84,27 @@ export default defineConfig({
         base: 'slate',
       },
       safelistColors: [
-        'amber', // this adds amber1, amber2, ..., amber12 and amber1A, amber2A, ..., amber12A whether they are used in your project or not. This is usefull when you add classes on runtime (ex from user input or over network).
-        'blue4', // these ones only adds blue4 whether it is used in your project or not.
-        'green3A', // these ones only adds green4A.
-        'white7A', // these ones only adds white7A.
+        'amber', /* this adds amber1, amber2, ..., amber12 and 
+        amber1A, amber2A, ..., amber12A 
+        whether they are used in your project or not. 
+        This is usefull when you add classes on runtime
+        (ex from user input or over network). */
+        'blue4', // only adds blue4 whether it is used in your project or not.
+        'green3A', // only adds green4A.
+        'white7A', // only adds white7A.
       ],
       safelistAliases: [
-        'primary', // this add primary1, primary2, ..., primary12 and primary1A, primary2A, ..., primary12A whether they are used in your project or not.
+        'primary', // adds primary1, primary2, ..., primary12 and primary1A, primary2A, ..., primary12A whether they are used in your project or not.
       ],
       prefix: 'my-prefix', // CSS variables will be generated with this prefix
       darkSelector: '.dark-theme', // CSS variables for dark colors will be applied to this selector
-      lightSelector: '.light-theme', // CSS variables for light colors will be applied to this selector
+      lightSelector: ':root .light-theme', // CSS variables for light colors will be applied to this selector
       useP3Colors: true, // use P3 colors with sRGB fallbacks
-      onlyOneTheme: 'dark', // if your project has only dark theme, set it here so CSS variables for other theme is not added to CSS. If this option is present, darkSelector and lightSelector will be ignored and all CSS variables will be added to the :root selector.
       extend: true, // extend instead of override the default theme
+      onlyOneTheme: 'dark', /* if your project has only dark theme, 
+      set it here so CSS variables for other theme is not added to CSS.
+      If this option is present, darkSelector and lightSelector will be ignored 
+      and all CSS variables will be added to the :root selector. */
     }),
   ],
 });
