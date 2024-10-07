@@ -53,7 +53,7 @@ export function addSafelistAliases({
     if (!match) return;
     const [token, alias, shade, alpha] = match as [string, Alias, Shade, Alpha];
     if (!safelistAliases.includes(alias)) continue;
-    if (!Object.keys(aliases).includes(alias)) continue;
+    if (!(alias in aliases)) continue;
 
     const hue = aliases[alias];
     // if its a single shade
@@ -92,7 +92,7 @@ export function addNotSafelistAliases({
     if (!match) continue;
     const [token, alias, shade, alpha] = match as [string, Alias, Shade, Alpha];
     if (!safelistAliases.includes(alias)) continue;
-    if (!Object.keys(aliases).includes(alias)) continue;
+    if (!(alias in aliases)) continue;
 
     const hue = aliases[alias];
     // if its a single shade
