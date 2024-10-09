@@ -39,7 +39,6 @@ describe('preset-radix', () => {
   const tt = async () => {
     const rawCss = (await uno.generate(new Set(['bg-red5']))).css;
     const css = cssToObject(rawCss);
-    console.log('🚀 ~ css:', css);
 
     // const propretyCreated = 'backgroundColor' in css['bg-red5'];
     // const lightColorCreated = `--${prefix}-red5` in css[lightSelector];

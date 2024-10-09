@@ -1,5 +1,10 @@
 export default function App() {
-  return <div className='alias-info-blue'>
-    <div className='bg-info4' >Hello world</div>
-  </div>;
+  return (
+    <div className='alias-info-blue' style={{
+      "color": "var(--rx-info6)",
+      "border-color": "var(--rx-info6A)",
+    }}>
+
+    </div>
+  );
 }

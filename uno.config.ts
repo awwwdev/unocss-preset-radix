@@ -26,12 +26,15 @@ export default defineConfig({
       aliases: {
         success: 'green',
         warning: 'amber',
-        danger: 'tomato'
+        danger: 'tomato',
+        // info: 'green'
       },
+      useP3Colors: true,
+      // safelistAliases: ['danger'],
       extend: true,
       // useP3Colors: true,
       // onlyOneTheme: 'dark',
-      safelistAliases: ['warning', 'danger4A'],
+      // safelistAliases: ['warning', 'danger4A'],
       // safelistColors: ['pink3A', 'white11A', 'blue']
     }),
   ],

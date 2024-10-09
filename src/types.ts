@@ -2,7 +2,6 @@ import { RADIX_HUES } from './consts';
 
 export type Alpha = 'A' | '';
 export type RadixHue = (typeof RADIX_HUES)[number];
-export type RadixHueOrBlackOrWhite = RadixHue | 'white' | 'black';
 export type Shade = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '-fg';
 export type ShadeAlpha =
   | '1'
@@ -29,7 +28,7 @@ export type ShadeAlpha =
   | '10A'
   | '11A'
   | '12A'
-  | '-fg'
+  | '-fg';
 export type P3 = 'P3' | '';
 export type Dark = 'Dark' | '';
 export type Token = string;
@@ -45,7 +44,7 @@ export type SafelistColor =
   | `black${Shade}A`
   | `white${Shade}A`
   | `white-fg`
-  | `black-fg`
+  | `black-fg`;
 
 type SafeListAlias<T extends string> = T | `${T}${Shade}${Alpha}` | `${T}-fg`;
 
@@ -74,7 +73,7 @@ export interface Options<T extends Aliases> {
   /**
    * Alias to preserve. Each alias will preserve all of its 12 shades.
    */
-  safelistAliases?: readonly (SafeListAlias<Extract<keyof T, string>>)[]
+  safelistAliases?: readonly SafeListAlias<Extract<keyof T, string>>[];
   /**
    * Extend instead of override the default theme
    * @default false
@@ -89,30 +88,11 @@ export interface Options<T extends Aliases> {
    * If your project has only one theme, set it here so CSS variables for other theme is not added to CSS.
    */
   onlyOneTheme?: 'dark' | 'light';
+  /**
+   * name of unocss layer to add generated css variables to
+   * @default "radix-colors"
+   */
+  layer?: string;
 }
 
-
 export type HueOrAlias = RadixHue | 'black' | 'white' | string;
-
-export type ColorProperties = {
-  shade: Shade;
-  alpha: Alpha;
-  hue: RadixHueOrBlackOrWhite;
-};
-
-export type AliasProperties = {
-  shade: Shade;
-  alpha: Alpha;
-};
-
-export type ColorInUse = {
-  shadesInUse: Record<ShadeAlpha, ColorProperties>;
-};
-export type AliasInUse = {
-  shadesInUse: Record<ShadeAlpha, AliasProperties>;
-  possibleHues: RadixHue[];
-};
-
-export type ColorsInUse = Record<RadixHueOrBlackOrWhite, ColorInUse>;
-export type AliasesInUse = Record<string, AliasInUse>;
-

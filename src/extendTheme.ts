@@ -1,6 +1,6 @@
 import { Theme } from 'unocss/preset-uno';
 import { RADIX_HUES } from './consts';
-import * as colorsInUseHelpers from './colorsInUseHelpers';
+import * as aliasesInUseHelpers from './aliasesInUseHelpers';
 
 
 export function extendTheme({
@@ -14,7 +14,7 @@ export function extendTheme({
   extend: boolean;
   useP3Colors: boolean;
 }) {
-  const aliasesInUse = colorsInUseHelpers.getAliasesInUse();
+  const aliasesInUse = aliasesInUseHelpers.getAliasesInUse();
 
   theme.colors = {
     ...(extend ? theme?.colors : []),

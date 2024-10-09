@@ -1,7 +1,8 @@
-import { Alpha, Dark, P3, RadixHue, RadixHueOrBlackOrWhite, Shade, ShadeAlpha } from './types';
+import { Alpha, Dark, P3, RadixHue, Shade, ShadeAlpha } from './types';
 import Color from 'colorjs.io';
 import * as radixColors from '@radix-ui/colors';
 import * as colorsInUseHelpers from './colorsInUseHelpers';
+import * as aliasesInUseHelpers from './aliasesInUseHelpers';
 import { fg } from './fg';
 
 type Props = {
@@ -21,6 +22,18 @@ export function generateCSSVariablesForColorsInUse({
   onlyOneTheme = null,
   aliases = {},
 }: Props): string {
+  const aliasesInUse = aliasesInUseHelpers.getAliasesInUse();
+
+  // for all aliase-shade-alpha used, add corresponding colors (or possible colors) to colorsInuse
+  for (const alias in aliasesInUse) {
+    for (const possibleHue of aliasesInUse[alias].possibleHues) {
+      for (const shadeAlpha in aliasesInUse[alias].shadesInUse) {
+        const { alpha, shade } = aliasesInUse[alias].shadesInUse[shadeAlpha as ShadeAlpha];
+        colorsInUseHelpers.addColor({ hue: possibleHue, shade, alpha });
+      }
+    }
+  }
+
   const cssRules: Record<string, string[]> = {
     global: [],
     globalP3: [],
@@ -33,8 +46,9 @@ export function generateCSSVariablesForColorsInUse({
   const colorsInUse = colorsInUseHelpers.getColorsInUse();
 
   for (const _hue in colorsInUse) {
-    for (const shadeAlpha in colorsInUse[_hue as RadixHueOrBlackOrWhite].shadesInUse) {
-      const { hue, shade, alpha } = colorsInUse[_hue as RadixHueOrBlackOrWhite].shadesInUse[shadeAlpha as ShadeAlpha];
+    for (const shadeAlpha in colorsInUse[_hue as RadixHue | 'black' | 'white'].shadesInUse) {
+      const { hue, shade, alpha } =
+        colorsInUse[_hue as RadixHue | 'black' | 'white'].shadesInUse[shadeAlpha as ShadeAlpha];
 
       if (['black', 'white'].includes(hue) || shade === '-fg') {
         cssRules.global.push(
@@ -70,10 +84,10 @@ export function generateCSSVariablesForColorsInUse({
     }
   }
 
-  const aliasesInUse = colorsInUseHelpers.getAliasesInUse();
-
   for (const alias in aliasesInUse) {
     const hue = aliases[alias];
+    // for hues that are not defined in the aliases (defiend via dynamic aliasing), skip.
+    if (!hue) continue;
     for (const shadeAlpha in aliasesInUse[alias].shadesInUse) {
       cssRules.global.push(`--${prefix}-${alias}${shadeAlpha}: var(--${prefix}-${hue}${shadeAlpha});`);
       if (useP3Colors) {
@@ -82,12 +96,38 @@ export function generateCSSVariablesForColorsInUse({
     }
   }
 
+  const scopeRules = {} as Record<string, string[]>;
+
+  
+  for (const alias in aliasesInUse) {
+    const scopes = aliasesInUse[alias].scopes;
+    
+    for (const selector in scopes) {
+      const hue = scopes[selector];
+      for (const shadeAlpha in aliasesInUse[alias].shadesInUse) {
+        scopeRules[selector] ??= [];
+        scopeRules[selector].push(`--${prefix}-${alias}${shadeAlpha}: var(--${prefix}-${hue}${shadeAlpha});`);
+        if (useP3Colors) {
+          scopeRules[selector].push(`--${prefix}-P3-${alias}${shadeAlpha}: var(--${prefix}-P3-${hue}${shadeAlpha});`);
+        }
+      }
+    }
+  }
+
+  const scopeCss = Object.keys(scopeRules)
+    .map((selector) => {
+      return `${selector} {
+${scopeRules[selector].join('\n')}
+}`;
+    })
+    .join('\n');
+
   let css = `:root {
   ${[
-      cssRules.global.join('\n'),
-      onlyOneTheme === 'light' ? cssRules.lightTheme.join('\n') : undefined,
-      onlyOneTheme === 'dark' ? cssRules.darkTheme.join('\n') : undefined,
-    ].join('\n')}
+    cssRules.global.join('\n'),
+    onlyOneTheme === 'light' ? cssRules.lightTheme.join('\n') : undefined,
+    onlyOneTheme === 'dark' ? cssRules.darkTheme.join('\n') : undefined,
+  ].join('\n')}
 }`;
 
   if (useP3Colors) {
@@ -95,13 +135,16 @@ export function generateCSSVariablesForColorsInUse({
 @supports(color: color(display-p3 0 0 1)) {
   :root {
   ${[
-        cssRules.globalP3.join('\n'),
-        onlyOneTheme === 'light' ? cssRules.lightThemeP3.join('\n') : undefined,
-        onlyOneTheme === 'dark' ? cssRules.darkThemeP3.join('\n') : undefined,
-      ].join('\n')}
+    cssRules.globalP3.join('\n'),
+    onlyOneTheme === 'light' ? cssRules.lightThemeP3.join('\n') : undefined,
+    onlyOneTheme === 'dark' ? cssRules.darkThemeP3.join('\n') : undefined,
+  ].join('\n')}
   }
 }`;
   }
+
+  css = `${css}
+${scopeCss}`;
 
   //  if both light and dark theme exist
   if (!onlyOneTheme) {

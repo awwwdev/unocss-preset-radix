@@ -1,6 +1,6 @@
 import { ALPHAS, RADIX_HUES, SHADES } from './consts';
-import { Aliases, Alpha, RadixHue, SafelistColor, Shade } from './types';
-import * as colorsInUseHelpers from './colorsInUseHelpers';
+import { Aliases, Alpha, RadixHue,  Shade } from './types';
+import * as aliasesInUseHelpers from './aliasesInUseHelpers';
 
 export function isValidPrefix(prefix: any){ 
   if (typeof prefix !== "string") return false;
@@ -38,8 +38,7 @@ export function isValidAlias({
   alpha: Alpha;
   aliases: Aliases;
 }) {
-  const aliasesInUse = colorsInUseHelpers.getAliasesInUse();
-  
+  const aliasesInUse = aliasesInUseHelpers.getAliasesInUse();
   
   if (!isValidAliasName(alias)) return false;
   if (!(alias in filterValidAliases(aliases)) && !(alias in aliasesInUse)) return false;
@@ -63,7 +62,7 @@ export function filterValidSafelistColors(safelistColors: string[]) {
   for (const safelistColor of safelistColors) {
     const match = safelistColor.match(/^([a-z]+)(1|2|3|4|5|6|7|8|9|10|11|12|-fg)?(A)?$/);
     if (!match) continue;
-    const [token, hue, shade, alpha] = match as [string, RadixHue | 'black' | 'white', Shade, Alpha];
+    const [token, hue, shade = '', alpha = ''] = match as [string, RadixHue | 'black' | 'white', Shade | '', Alpha];
 
     // if its a single shade
     if (shade) {
@@ -91,13 +90,13 @@ export function filterValidSafelistAliases(safelistAliases: string[], aliases: A
     const match = safelistAlias.match(/^([a-z]+(-[a-z]+)*)(1|2|3|4|5|6|7|8|9|10|11|12|-fg)?(A)?$/);
     if (!match) continue;
 
-    const [token, alias, shade, alpha] = match as [string, string, Shade | '', Alpha];
+    const [token, alias, aliasInnerGroup , shade = '', alpha = ''] = match as [string, string ,string, Shade | '', Alpha];
 
     if (shade) {
       if (!isValidAlias({ alias, shade, alpha, aliases })) continue;
       validSafelistAliases[`${alias}${shade}${alpha}`] = { alias, shade, alpha };
     }
-    if (shade === '') {
+    if (!shade) {
       for (const a of ALPHAS) {
         for (const sh of SHADES) {
           if (!isValidAlias({ alias, shade: sh, alpha: a, aliases })) continue;
