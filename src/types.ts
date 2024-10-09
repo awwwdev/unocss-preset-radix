@@ -3,7 +3,7 @@ import { RADIX_HUES } from './consts';
 export type Alpha = 'A' | '';
 export type RadixHue = (typeof RADIX_HUES)[number];
 export type RadixHueOrBlackOrWhite = RadixHue | 'white' | 'black';
-export type Shade = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+export type Shade = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '-fg';
 export type ShadeAlpha =
   | '1'
   | '2'
@@ -28,7 +28,8 @@ export type ShadeAlpha =
   | '9A'
   | '10A'
   | '11A'
-  | '12A';
+  | '12A'
+  | '-fg'
 export type P3 = 'P3' | '';
 export type Dark = 'Dark' | '';
 export type Token = string;
@@ -38,11 +39,15 @@ export type Aliases = Record<Alias, RadixHue>;
 
 export type SafelistColor =
   | RadixHue
-  | `${RadixHue}${Shade}${Alpha}`
+  | `${RadixHue}${ShadeAlpha}`
   | 'black'
   | 'white'
   | `black${Shade}A`
-  | `white${Shade}A`;
+  | `white${Shade}A`
+  | `white-fg`
+  | `black-fg`
+
+type SafeListAlias<T extends string> = T | `${T}${Shade}${Alpha}` | `${T}-fg`;
 
 export interface Options<T extends Aliases> {
   /**
@@ -69,7 +74,7 @@ export interface Options<T extends Aliases> {
   /**
    * Alias to preserve. Each alias will preserve all of its 12 shades.
    */
-  safelistAliases?: readonly (keyof T)[];
+  safelistAliases?: readonly (SafeListAlias<Extract<keyof T, string>>)[]
   /**
    * Extend instead of override the default theme
    * @default false
