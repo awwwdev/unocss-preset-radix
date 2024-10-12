@@ -20,7 +20,7 @@ export default defineConfig({
       dark: 'class',
     }),
     presetRadix({
-      prefix: '-rx-',
+      // prefix: '-rx-',
       darkSelector: '.my-dark-selector',
       lightSelector: '.light-selector',
       aliases: {
