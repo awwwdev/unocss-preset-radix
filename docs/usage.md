@@ -70,7 +70,7 @@ You can switch the docs theme in the ... menu in the top right corner of the pag
 
 ## Usage in CSS Variables
 
-You can use css variables (like `var(--un-preset-radix-red9)`, `var(--un-preset-radix-red9 , red)`) in your project and the preset detects it and add coressponding colors.
+You can use css variables (like `var(--un-preset-radix-red9)`, `var(--un-preset-radix-red9 , red)`) in your project and the preset detects it and add corresponding colors.
 
 ```html
 <div style="background-color: var(--un-preset-radix-gray1); color: var(--un-preset-radix-gray12, 'darkgray')">Text on gray background</div>
@@ -108,7 +108,7 @@ export default defineConfig({
         'amber', /* this adds amber1, amber2, ..., amber12 and 
         amber1A, amber2A, ..., amber12A 
         whether they are used in your project or not. 
-        This is usefull when you add classes on runtime
+        This is useful when you add classes on runtime
         (ex from user input or over network). */
         'blue4', // only adds blue4 whether it is used in your project or not.
         'green3A', // only adds green4A.

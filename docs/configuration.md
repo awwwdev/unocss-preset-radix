@@ -21,7 +21,7 @@ Note when using P3 colors, rgb colors are also added as fallbacks.
 
 A key value object of color aliases in the format `alias: target` that allows you to set aliases for the color palette.
 
-Alias name must conatin only lowercases letter (`a` to `z`) and hyphens (`-`).
+Alias name must contain only lowercases letter (`a` to `z`) and hyphens (`-`).
 
 You cannot set aliases to other aliases.
 
@@ -33,13 +33,13 @@ Alpha steps and `fg` are generated automatically, so if you have alias `brand: b
 
 ### safelist
 
-An array of Colors or aliases you want to preserve. This is usefull when you insert classes on runtime (ex from user input or over network).
+An array of Colors or aliases you want to preserve. This is useful when you insert classes on runtime (ex from user input or over network).
 
 example: `safelist: ['blue4', 'red5A', 'amber-fg', 'green', 'danger4A', 'base-fg', 'success']`
 
 You can preserve an specific steps of a hue. Like `blue4`, `red5A`, `amber-fg`, etc.
 You can preserve an all steps (12 steps + 12 alpha steps + `fg` step) of a hue. Like `blue`, `red`, `amber`, etc.
-You can preserve an specific steps of an aliase. Like `success4`, `warning5A`, `base-fg`, etc.
+You can preserve an specific steps of an alias. Like `success4`, `warning5A`, `base-fg`, etc.
 You can preserve an all steps of an alias (12 steps + 12 alpha steps + `fg` step). Like `success`, `warning`, `base`, etc.
 
 Note any safelist alias must be defined in aliases option, otherwise it will be ignored.
