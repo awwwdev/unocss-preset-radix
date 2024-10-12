@@ -4,7 +4,7 @@
 
 - V3 uses Radix Colors V3 under the hood. Radix Colors are changed slightly in V3. Please note in V3, step 6,7 and 8 are used for borders. (in Radix Colors v2 steps 5,6 and 7 are used for borders). Please visit [Radix Docs](https://www.radix-ui.com/colors/docs/palette-composition/understanding-the-scale) for more information.
 
-- `palette` option is removed. You don't need to specify palette colors anymore. Colors are added autoamtically. This version adds the minimum required CSS variables to keep the CSS optimised. But if you need to safelist colors, use `safelistColors` option instead. Also, if you need to safelist aliases, use `safelistAliases` option instead.
+- `palette` option is removed. You don't need to specify palette colors anymore. Colors are added autoamtically. This version adds the minimum required CSS variables to keep the CSS optimised. But if you need to safelist colors or aliases, use `safelist` option instead. Learn more abour safelist option in [Configuration docs](/unocss-preset-radix/configuration) section.
 
 - `hue` utility is removed in favor of more flexible Alias Utility. You can replace `hue-red` and `bg-hue4` with `alias-hue-red` and use`bg-hue4`. You can use any other aliases instead of `hue`. With Alias Utility you can define multiple aliases in one scope (while with hue you are stick to one alias). For example:
 

@@ -83,7 +83,7 @@ export default defineConfig({
         primary: 'green',
         base: 'slate',
       },
-      safelistColors: [
+      safelist: [
         'amber', /* this adds amber1, amber2, ..., amber12 and 
         amber1A, amber2A, ..., amber12A 
         whether they are used in your project or not. 
@@ -92,8 +92,6 @@ export default defineConfig({
         'blue4', // only adds blue4 whether it is used in your project or not.
         'green3A', // only adds green4A.
         'white7A', // only adds white7A.
-      ],
-      safelistAliases: [
         'primary', // adds primary1, primary2, ..., primary12 and primary1A, primary2A, ..., primary12A whether they are used in your project or not.
       ],
       prefix: 'my-prefix', // CSS variables will be generated with this prefix
