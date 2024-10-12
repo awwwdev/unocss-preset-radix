@@ -20,10 +20,16 @@ Note when using P3 colors, rgb colors are also added as fallbacks.
 ### aliases
 
 A key value object of color aliases in the format `alias: target` that allows you to set aliases for the color palette.
+
+Alias name must conatin only lowercases letter (`a` to `z`) and hyphens (`-`).
+
 You cannot set aliases to other aliases.
+
 You cannot set aliases to `black` or `white`.
+
 The Alias name can not be a Radix Hue names.
-Alpha variants for aliases are generated automatically, so for then given alias `brand: blue`, an alias `brandA: blueA` will also be generated.
+
+Alpha steps and `fg` are generated automatically, so if you have alias `brand: blue`, you can use `bg-brand2A` and `c-brand-fg`.
 
 ### safelist
 

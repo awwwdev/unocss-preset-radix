@@ -68,6 +68,27 @@ Which will render as:
 
 You can switch the docs theme in the ... menu in the top right corner of the page.
 
+## Usage in CSS Variables
+
+You can use css variables (like `var(--un-preset-radix-red9)`, `var(--un-preset-radix-red9 , red)`) in your project and the preset detects it and add coressponding colors.
+
+```html
+<div style="background-color: var(--un-preset-radix-gray1); color: var(--un-preset-radix-gray12, 'darkgray')">Text on gray background</div>
+```
+If you use this in CSS files, make sure UnoCSS the CSS files.
+
+If you change prefix in the settings, you will need to change the CSS variables as well. For example, if you set prefix to `my-prefix`, you will need to change the CSS variables to `var(--my-prefix-red9)`, `var(--my-prefix-red9 , red)`.
+
+DO NOT put an space between `var(` and `--un-preset-radix-`. This won't be detected. 
+
+`var(--un-preset-radix-red9)` ✅ Works
+`var(--un-preset-radix-red9, red)` ✅ Works
+`var(--un-preset-radix-red9 )` ✅ Works
+
+`var(--un-preset-radix-red9,red)` ❌ Will not work
+`var( --un-preset-radix-red9)` ❌ Will not work
+`var( --un-preset-radix-red9 )` ❌ Will not work
+
 ## Advanced Configuration
 
 ```ts

@@ -29,6 +29,8 @@ You can use P3 colors with sRGB fallbacks. Set useP3Colors option to true to ena
 
 You can set the unocss layer you want to add generated css variables to, via layer option.
 
+You can use css variables (like `var(--un-preset-radix-red9)`, `var(--un-preset-radix-red9 , red)`) in your project and the preset detects it and add coressponding colors. If you use this in css files, make sure UnoCSS the css files.
+
 You can opt to add only light colors (or only dark colors) to the CSS, bya onlyOneTheme option to `light` (or `dark`).
 
 You can use `fg` on colors as well as aliases, like `bg-blue-fg` or `alias-blue-fg`.
